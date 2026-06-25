@@ -1,36 +1,140 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NextJS DA — Projet d'apprentissage Next.js 15
 
-## Getting Started
+Projet pédagogique construit pour explorer les fonctionnalités clés de **Next.js 15** avec l'App Router, React 19 et TypeScript.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Stack technique
+
+| Technologie | Version | Rôle |
+|-------------|---------|------|
+| [Next.js](https://nextjs.org) | 15.3.4 | Framework React full-stack |
+| [React](https://react.dev) | 19.0.0 | Bibliothèque UI |
+| [TypeScript](https://www.typescriptlang.org) | 5.x | Typage statique |
+| [Tailwind CSS](https://tailwindcss.com) | 4.x | Styling utilitaire |
+| [ESLint](https://eslint.org) | 9.x | Linting (flat config) |
+
+---
+
+## Fonctionnalités couvertes
+
+- **App Router** — structure de routes basée sur le système de fichiers
+- **Route Groups** — organisation sans impact sur l'URL (ex. `(auth)`)
+- **Routes dynamiques** — paramètres d'URL avec `[id]`
+- **Layouts imbriqués** — layout racine + layouts par segment
+- **Server Components** — rendu côté serveur par défaut
+- **Client Components** — directive `"use client"` pour l'interactivité
+- **Data fetching** — `fetch` avec revalidation ISR (`revalidate: 60`)
+- **Navigation active** — `usePathname` pour surligner le lien courant
+- **State local** — `useState` dans un compteur interactif
+- **Formulaire d'auth** — LoginForm avec validation basique
+
+---
+
+## Structure du projet
+
+```
+src/
+└── app/
+    ├── layout.tsx              # Layout racine (header + footer)
+    ├── page.tsx                # Page d'accueil
+    ├── globals.css             # Styles globaux (Tailwind)
+    ├── (auth)/                 # Groupe de routes auth (sans impact URL)
+    │   ├── login/page.tsx
+    │   ├── register/page.tsx
+    │   └── forgot-password/page.tsx
+    ├── about/page.tsx
+    ├── blog/
+    │   └── first-post/page.tsx
+    ├── products/[id]/          # Route dynamique (en)
+    │   ├── page.tsx
+    │   └── layout.tsx
+    ├── produits/               # Route dynamique (fr) — fetch API externe
+    │   ├── page.tsx
+    │   └── [id]/page.tsx
+    └── components/
+        ├── navigation.tsx      # Barre de navigation (client)
+        ├── counter.tsx         # Compteur interactif (client)
+        ├── greet.tsx           # Composant de salutation (server)
+        └── LoginForm.tsx       # Formulaire de connexion (client)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Prérequis
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Node.js** >= 18.x
+- **npm** >= 9.x
+- Une API REST locale sur `http://localhost:8082` pour les pages `/produits` (optionnel)
 
-## Learn More
+L'API attendue expose :
+```
+GET /api/v1/products          → Product[]
+GET /api/v1/products/:id      → Product
+```
+avec le type `Product { id: number; name: string; price: number }`.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Installation & démarrage
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+# Cloner le dépôt
+git clone <url-du-repo>
+cd next/nextjsda
 
-## Deploy on Vercel
+# Installer les dépendances
+npm install
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Lancer le serveur de développement
+npm run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Ouvrir [http://localhost:3000](http://localhost:3000) dans le navigateur.
+
+---
+
+## Scripts disponibles
+
+| Commande | Description |
+|----------|-------------|
+| `npm run dev` | Serveur de développement avec hot-reload |
+| `npm run build` | Build de production optimisé |
+| `npm run start` | Démarrer le serveur de production |
+| `npm run lint` | Vérifier le code avec ESLint |
+
+---
+
+## Pages & routes
+
+| Route | Description |
+|-------|-------------|
+| `/` | Page d'accueil |
+| `/about` | Page À propos |
+| `/blog/first-post` | Premier article de blog |
+| `/login` | Page de connexion |
+| `/register` | Page d'inscription |
+| `/forgot-password` | Réinitialisation du mot de passe |
+| `/produits` | Liste des produits (fetch API) |
+| `/produits/:id` | Détail d'un produit |
+| `/products/:id` | Route dynamique alternative |
+
+---
+
+## Déploiement
+
+La méthode la plus simple est via [Vercel](https://vercel.com), la plateforme officielle de Next.js :
+
+```bash
+npm run build
+```
+
+Puis connecter le dépôt sur [vercel.com/new](https://vercel.com/new) pour un déploiement automatique à chaque push.
+
+---
+
+## Ressources
+
+- [Documentation Next.js](https://nextjs.org/docs)
+- [Tutoriel interactif Next.js](https://nextjs.org/learn)
+- [Référence App Router](https://nextjs.org/docs/app)
